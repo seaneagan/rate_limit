@@ -15,9 +15,9 @@ window.onScroll
  .transform(new Throttler(const Duration(milliseconds: 100)))
  .forEach(updatePosition);
  
-// Execute `renewToken` on click, but not more than once every 5 seconds.
+// Execute `renewToken` on click, but not more than once every 5 minutes.
 querySelector('.interactive').onClick
- .transform(new Throttler(const Duration(seconds: 5), trailing: false))
+ .transform(new Throttler(const Duration(minutes: 5), trailing: false))
  .forEach(renewToken);
 ```
 
