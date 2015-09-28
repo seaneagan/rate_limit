@@ -3,22 +3,22 @@ library rate_limit_test;
 
 import 'dart:async';
 
-import 'package:rate_limit/rate_limit.dart';
-import 'package:unittest/unittest.dart';
 import 'package:fake_async/fake_async.dart';
+import 'package:rate_limit/rate_limit.dart';
+import 'package:test/test.dart';
 
 main() {
   group('Debouncer', () {
 
     test('should throw when both `leading` and `trailing` are false', () {
       expect(
-          () => new Debouncer(const Duration(seconds: 1), leading: false, trailing: false), 
+          () => new Debouncer(const Duration(seconds: 1), leading: false, trailing: false),
           throwsArgumentError);
     });
 
     test('should throw when `wait` is less than `maxWait`', () {
       expect(
-          () => new Debouncer(const Duration(seconds: 2), maxWait: const Duration(seconds: 1)), 
+          () => new Debouncer(const Duration(seconds: 2), maxWait: const Duration(seconds: 1)),
           throwsArgumentError);
     });
 
@@ -60,16 +60,16 @@ main() {
               async.elapse(const Duration(seconds: 1));
             }
           }
-          
+
           thrash();
           controller.add('first');
           async.elapse(const Duration(seconds: 2));
           firstTime = async.elapsed;
-          
+
           thrash();
           controller.add('second');
           async.elapse(const Duration(seconds: 2));
-          
+
           controller.close();
           return expectation;
         });
@@ -123,15 +123,15 @@ main() {
         });
       });
     });
-    
+
     group('Throttler', () {
 
       test('should throw when both `leading` and `trailing` are false', () {
         expect(
-            () => new Throttler(const Duration(seconds: 1), leading: false, trailing: false), 
+            () => new Throttler(const Duration(seconds: 1), leading: false, trailing: false),
             throwsArgumentError);
       });
-      
+
       test('should throttle', () {
         return new Future(() {
           return new FakeAsync().run((async) {
