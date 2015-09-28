@@ -5,24 +5,24 @@ library rate_limit;
 import 'dart:async';
 
 /// Enforces a wait period between events.
-class Throttler<T> implements StreamTransformer {
+class Throttler<T> implements StreamTransformer<T, T> {
 
   Debouncer<T> _debounce;
 
-  /// Requires a [wait] period to elapse after any previous event before 
+  /// Requires a [wait] period to elapse after any previous event before
   /// emitting the next event.
-  /// 
-  /// If [leading] is true, then events which do not occur in a wait period 
-  /// are emitted immediately, otherwise they will be emitted at the end of the 
+  ///
+  /// If [leading] is true, then events which do not occur in a wait period
+  /// are emitted immediately, otherwise they will be emitted at the end of the
   /// wait period.
-  /// 
-  /// If [trailing] is true, then the last event to occur in a wait period will 
+  ///
+  /// If [trailing] is true, then the last event to occur in a wait period will
   /// be output at the end of the wait period.
-  /// 
+  ///
   /// If both [leading] and [trailing] are false, throws an [ArgumentError].
   Throttler(
-      Duration wait, 
-      {bool leading: true, 
+      Duration wait,
+      {bool leading: true,
        bool trailing: true}) {
     if(!leading && !trailing) {
       throw new ArgumentError('Either `leading` or `trailing` must be true.');
@@ -34,7 +34,7 @@ class Throttler<T> implements StreamTransformer {
 }
 
 /// Enforces a *quiet* wait period between events.
-class Debouncer<T> implements StreamTransformer {
+class Debouncer<T> implements StreamTransformer<T, T> {
 
   final Duration _wait;
   final Duration _maxWait;
@@ -47,28 +47,28 @@ class Debouncer<T> implements StreamTransformer {
     return __waitEqualsMaxWait;
   }
   bool __waitEqualsMaxWait;
-  
-  /// Requires a [wait] period to elapse *with no input events* after any 
+
+  /// Requires a [wait] period to elapse *with no input events* after any
   /// previous event before emitting the next event.
-  /// 
-  /// If [maxWait] is provided, then it specifies the maximum wait period 
+  ///
+  /// If [maxWait] is provided, then it specifies the maximum wait period
   /// before events can be emitted again.
-  /// 
+  ///
   /// If [maxWait] is less than [wait], throws an [ArgumentError].
-  /// 
-  /// If [leading] is true, then events which do not occur in a wait period 
-  /// are emitted immediately, otherwise they will be emitted at the end of the 
+  ///
+  /// If [leading] is true, then events which do not occur in a wait period
+  /// are emitted immediately, otherwise they will be emitted at the end of the
   /// wait period.
-  /// 
-  /// If [trailing] is true, then the last event to occur in a wait period will 
+  ///
+  /// If [trailing] is true, then the last event to occur in a wait period will
   /// be output at the end of the wait period.
-  /// 
+  ///
   /// If both [leading] and [trailing] are false, throws an [ArgumentError].
   Debouncer(
-      Duration wait, 
-      {Duration maxWait, 
-       bool leading: false, 
-       bool trailing: true}) : 
+      Duration wait,
+      {Duration maxWait,
+       bool leading: false,
+       bool trailing: true}) :
        _wait = wait,
        _maxWait = maxWait,
        _leading = leading,
@@ -80,7 +80,7 @@ class Debouncer<T> implements StreamTransformer {
       throw new ArgumentError('`maxWait` cannot be less than `wait`.');
     }
   }
-    
+
   StreamTransformer<T, T> get _transformer =>
       new StreamTransformer<T, T>(
           (Stream<T> input, bool cancelOnError) {
@@ -111,7 +111,7 @@ class Debouncer<T> implements StreamTransformer {
             controller = new StreamController<T>(
               onListen: () {
                 subscription = input.listen((data) {
-              
+
                   addData = _trailing;
                   lastData = data;
                   bool setTimer = false;
