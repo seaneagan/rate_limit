@@ -88,7 +88,6 @@ class Debouncer<T> implements StreamTransformer<T, T> {
             StreamSubscription<T> subscription;
             Timer waitTimer;
             Timer maxWaitTimer;
-            T trailingData;
             cancelTimers() {
               if(waitTimer != null) {
                 waitTimer.cancel();
