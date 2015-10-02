@@ -4,5 +4,5 @@ author: Sean Eagan <seaneagan1@gmail.com>
 description: Rate limiting for Streams.
 homepage: http://github.com/seaneagan/rate_limit
 dev_dependencies:
-  fake_async: any
-  unittest: '>=0.11.0+2 <0.12.0'
+  fake_async: ^0.1.0
+  test: ^0.12.0
